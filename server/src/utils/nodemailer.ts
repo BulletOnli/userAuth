@@ -22,6 +22,5 @@ export async function sendVerificationEmail(
         html: `<div> Your verification code: <b>${uniqueCode}</b> </div>`,
     });
 
-    console.log(`Message sent: ${info.messageId}`);
     return uniqueCode;
 }
