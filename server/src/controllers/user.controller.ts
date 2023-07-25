@@ -48,7 +48,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
     if (!user) {
         res.status(404);
-        throw new Error("Email not found");
+        throw new Error("Incorrect email address");
     }
 
     if (user && (await bcrypt.compare(password, user.password))) {
