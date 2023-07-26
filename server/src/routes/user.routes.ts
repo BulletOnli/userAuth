@@ -4,7 +4,6 @@ import {
     loginUser,
     registerUser,
     sendCode,
-    verifyEmail,
 } from "../controllers/user.controller";
 import protectRoute from "../middlewares/protectRoute";
 
@@ -16,9 +15,7 @@ router.get("/", protectRoute, (req, res) => {
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-
-router.get("/code", protectRoute, sendCode);
-router.post("/verify/email", protectRoute, verifyEmail);
+router.post("/code", sendCode);
 router.post("/change/password", protectRoute, changePassword);
 
 export default router;

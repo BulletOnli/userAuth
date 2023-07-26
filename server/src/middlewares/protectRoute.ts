@@ -1,12 +1,12 @@
 /// <reference path="../types/custom.d.ts" />
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import User, { UserType } from "../models/userSchema";
+import User from "../models/userSchema";
 import asyncHandler from "express-async-handler";
 
 const protectRoute = asyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
-        let token;
+        let token: string;
         const authHeader = req.headers["authorization"];
 
         if (authHeader) {
