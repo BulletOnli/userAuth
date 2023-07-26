@@ -28,8 +28,19 @@ const Homepage = () => {
 
     return (
         <div className="w-full h-screen flex flex-col items-center p-6">
-            <h1 className="text-2xl font-bold mt-4">{userQuery.data}</h1>
+            <h1 className="text-2xl font-bold mt-4">
+                Hello, {userQuery.data.email} (
+                {userQuery.data.isVerified ? "Verified" : "Not Verified"})
+            </h1>
             <HStack mt={4}>
+                <Button
+                    as={Link}
+                    href="/verify"
+                    colorScheme="green"
+                    isDisabled={userQuery.data.isVerified}
+                >
+                    Verify Account
+                </Button>
                 <Button as={Link} href="/change-password" colorScheme="blue">
                     Change password
                 </Button>

@@ -11,6 +11,17 @@ const generateToken = (_id: string): string => {
     });
 };
 
+export const getUserDetails = asyncHandler(
+    async (req: Request, res: Response) => {
+        const { email, isVerified } = req.user;
+
+        res.status(200).json({
+            email,
+            isVerified,
+        });
+    }
+);
+
 export const registerUser = asyncHandler(
     async (req: Request, res: Response) => {
         const { email, password, confirmPassword } = req.body;
@@ -36,6 +47,7 @@ export const registerUser = asyncHandler(
         const newUser = await User.create({
             email,
             password: hashedPassword,
+            isVerified: false,
         });
 
         if (newUser) {
@@ -49,6 +61,7 @@ export const registerUser = asyncHandler(
 
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
     const { email, password } = req.body;
+
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -100,4 +113,24 @@ export const sendCode = asyncHandler(async (req: Request, res: Response) => {
         verificationCode,
         token: generateToken(user._id.toString()),
     });
+});
+
+export const verifyUser = asyncHandler(async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        res.status(404);
+        throw new Error("User not found");
+    }
+
+    if (user && (await bcrypt.compare(password, user?.password))) {
+        user.isVerified = true;
+        user.save();
+
+        res.status(200).json("This user is now verified!");
+    } else {
+        res.status(400);
+        throw new Error("Wrong password");
+    }
 });
